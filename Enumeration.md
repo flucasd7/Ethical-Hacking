@@ -42,7 +42,7 @@
 `$gobuster dir -h http://10.10.2.131 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -t 20 -x html,php,txt --proxy socks5://127.0.0.1:1080`
 ### WFUZZ
 
->wfuzz -c --hc 404 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt [http://testphp.vulnweb.com/FUZZ](http://testphp.vulnweb.com/FUZZ)  //reemplaza FUZZ por los valores en el diccionarios. -c es para dar color.--hc no muestra los valores con respuesta especificada (en este caso 404)
+`wfuzz -c --hc 404 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt [http://testphp.vulnweb.com/FUZZ](http://testphp.vulnweb.com/FUZZ)`  *reemplaza FUZZ por los valores en el diccionarios. -c es para dar color.--hc no muestra los valores con respuesta especificada (en este caso 404)*
 
 |                                                                                                                                                                    |                                                        |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ |
