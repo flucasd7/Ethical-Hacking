@@ -23,6 +23,7 @@ Analysing the Unauthenticated Remote Code execution, we found that by lokking fo
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324054854.png)
 
 Testing the script
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324060523.png)
 
 If it doesn't work we can create a reverse shell for Windows by using a smbserver to upload the file and create the connection
@@ -35,6 +36,7 @@ To find the flag we use: `dir /r /s user.txt` since folder `C:\Users`
 # Privilege Escalation
 
 Using [[WinPEAS]] we can detect some suspicious files:
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324082619.png)
 
 ### Exploiting CloudMe
@@ -50,8 +52,10 @@ The installer version found id 1.11.2, so we can use any of this exploits or we 
 
 At first we download the version of CloudMe in our machine
 In our windows7 where it's download the file, we verified that port 8888 is open:
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324121611.png)
 Reviewing the exploit db script, it sends directly to the port 8888 the payload:
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324121759.png)
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324122630.png)
 
