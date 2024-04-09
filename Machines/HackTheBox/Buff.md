@@ -11,48 +11,48 @@ PORT     STATE SERVICE    REASON          VERSION
 |_http-server-header: Apache/2.4.43 (Win64) OpenSSL/1.1.1g PHP/7.4.6
 
 ## Enumeration
-![[Pasted image 20240323211329.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240323211329.png)
 
 We've got the technology
-![[Pasted image 20240323211410.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240323211410.png)
 
 [[Internal Path Discloser]]
 Analysing the Unauthenticated Remote Code execution, we found that by lokking for *upload.php* we found a server directory
 
-![[Pasted image 20240324054854.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324054854.png)
 
 Testing the script
-![[Pasted image 20240324060523.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324060523.png)
 
 If it doesn't work we can create a reverse shell for Windows by using a smbserver to upload the file and create the connection
 ![[Reverses Shell]]
 
 To find the flag we use: `dir /r /s user.txt` since folder `C:\Users`
 
-![[Pasted image 20240324073028.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324073028.png)
 
 # Privilege Escalation
 
 Using [[WinPEAS]] we can detect some suspicious files:
-![[Pasted image 20240324082619.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324082619.png)
 
 ### Exploiting CloudMe
 We verify if this service is probably running in windows system
 By searching for CloudMe in google, by default it runs in port 8888, coincidentally, port 8888 is open
-![[Pasted image 20240324082653.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324082653.png)
 The installer version found id 1.11.2, so we can use any of this exploits or we can do it mannually
-![[Pasted image 20240324082904.png]]
-![[Pasted image 20240324083047.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324082904.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324083047.png)
 
 ## BufferOverflow
 [[BufferOverFlow|BufferOverFlow]]
 
 At first we download the version of CloudMe in our machine
 In our windows7 where it's download the file, we verified that port 8888 is open:
-![[Pasted image 20240324121611.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324121611.png)
 Reviewing the exploit db script, it sends directly to the port 8888 the payload:
-![[Pasted image 20240324121759.png]]
-![[Pasted image 20240324122630.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324121759.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324122630.png)
 
 As there is not the port available, we can use pivoting to access to it.
 [[Pivoting]]
@@ -66,7 +66,7 @@ Windows:
 `chisel.exe client 192.168.195.170:1234 R:8888:127.0.0.1:8888`
 
 Seeing the tunnel using `lsof -i:8888`
-![[Pasted image 20240324132727.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324132727.png)
 ### Creating our own exploit:
 In python3, by lunching 5000 A, the software crashes
 `#!/usr/bin/python3`
@@ -96,8 +96,8 @@ In python3, by lunching 5000 A, the software crashes
 `if __name__=='__main__':`
     `makeConnection()`
 
-![[Pasted image 20240324133352.png]]
-![[Pasted image 20240324133814.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324133352.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324133814.png)
 
 All is fulls of A. EIP doesn't recognize address 41414141 so it crashes.
 
@@ -108,20 +108,20 @@ We can generate offsets by using:
 ```
 
 We modify our payload with this:
-![[Pasted image 20240324140027.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324140027.png)
 
 
 After executing the script, we need to find in which string the EIP crashed to determine the offset lenght
-![[Pasted image 20240324142254.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324142254.png)
 EIP = 316A4230
 As windows7 uses little ending, then the string should be reversed:
 
 *string*: 30426A31
 `echo -n "30426A31" | xxd -ps -r; echo`
-![[Pasted image 20240324142451.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324142451.png)
 
 Locating the string
-![[Pasted image 20240324142818.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324142818.png)
 
 #### Getting offset automatically based on EIP
 We set EIP value as parameter:
@@ -161,10 +161,10 @@ We want to verify id the offset is correct, as well as the capacity of manopulat
 `if __name__=='__main__':`
     `makeConnection()`
 
-![[Pasted image 20240324144827.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324144827.png)
 
 To verify if C letters are in the beginning of ESP (Stack Pointer) we can check the stack and the previous address. This is to be sure that we are injecting characters right before EIP
-![[Pasted image 20240324153820.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324153820.png)
 
 As we don't change directly the EIP directly, we need to set an *offcode*  to jump to our shell
 
@@ -172,7 +172,8 @@ As we don't change directly the EIP directly, we need to set an *offcode*  to ju
 After downloaded, install in *C:\Program Files\Immunity Inc\Immunity Debugger\PyCommands*
 
 Testing:
-![[Pasted image 20240324154807.png]]Creating a working folder in the desktop:
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324154807.png)
+Creating a working folder in the desktop:
 ```
 !mona config -set workingfolder C:\Users\fredd\Desktop\%p
 ```
@@ -188,7 +189,7 @@ We can edit and only let the necessary information, after that, share this to a 
 ```
 smbserver.py smbFolder $(pwd) -smb2support
 ```
-![[Pasted image 20240324155517.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324155517.png)
 
 Copying the file to the clipboard:
 `cat bytearray.txt| xclip -sel clip`
@@ -250,18 +251,18 @@ By using:
 #### Searching for  a vulnerable service
 by suing !mona modules
 
-![[Pasted image 20240324161930.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324161930.png)
 
 We will use qsqlite.dll
 
 Then look for the JMP ESP opcode in the vulnerable DLL
 `!mona find -s "\xff\xe4" -m qsqlite.dll`
 
-![[Pasted image 20240324162810.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324162810.png)
 
 To verify if this works, we look for the address:
-![[Pasted image 20240324163058.png]]
-![[Pasted image 20240324163118.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324163058.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324163118.png)
 
 We can add a **breakpoint** in Inmunity with *F2*
 
@@ -307,11 +308,11 @@ Testing in our code:
 
 To verify if this is workig, we will run the program and the program will stop in our breakpoint, after that we can try to go to the nest instruction and EIP must be the same as ESP
 
-![[Pasted image 20240324182039.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324182039.png)
 
 We verify that the ESP is the same as EIP and we are entering to the DLL program.
 
-![[Pasted image 20240324182141.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324182141.png)
 
 #### Creating our shellcode
 To try at first in our local machine (par default it will encode it as shikitata_ga_nai):
@@ -379,7 +380,7 @@ Necessary to give a "time" to the program to decode our shellcode
 
 Opening  a listener in the port stablished, we've got connection as admin
 
-![[Pasted image 20240325024004.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240325024004.png)
 #### Reserving a memory space
 
  `/usr/share/metasploit-framework/tools/exploit/nasm_shell.rb`
