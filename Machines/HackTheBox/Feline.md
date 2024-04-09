@@ -1,6 +1,6 @@
 HackTheBox
 # Scan
-![[Pasted image 20240401181810.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401181810.png)
 
 # Uploading files
 When trying to upload a file, it accepts all extension, even whithout any, however when there is no filename, there is an error.
