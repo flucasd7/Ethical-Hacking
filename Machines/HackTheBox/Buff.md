@@ -54,6 +54,7 @@ At first we download the version of CloudMe in our machine
 In our windows7 where it's download the file, we verified that port 8888 is open:
 
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324121611.png)
+
 Reviewing the exploit db script, it sends directly to the port 8888 the payload:
 
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324121759.png)
@@ -71,6 +72,7 @@ Windows:
 `chisel.exe client 192.168.195.170:1234 R:8888:127.0.0.1:8888`
 
 Seeing the tunnel using `lsof -i:8888`
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324132727.png)
 ### Creating our own exploit:
 In python3, by lunching 5000 A, the software crashes
@@ -113,19 +115,23 @@ We can generate offsets by using:
 ```
 
 We modify our payload with this:
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324140027.png)
 
 
 After executing the script, we need to find in which string the EIP crashed to determine the offset lenght
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324142254.png)
 EIP = 316A4230
 As windows7 uses little ending, then the string should be reversed:
 
 *string*: 30426A31
 `echo -n "30426A31" | xxd -ps -r; echo`
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324142451.png)
 
 Locating the string
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324142818.png)
 
 #### Getting offset automatically based on EIP
@@ -169,6 +175,7 @@ We want to verify id the offset is correct, as well as the capacity of manopulat
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324144827.png)
 
 To verify if C letters are in the beginning of ESP (Stack Pointer) we can check the stack and the previous address. This is to be sure that we are injecting characters right before EIP
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324153820.png)
 
 As we don't change directly the EIP directly, we need to set an *offcode*  to jump to our shell
@@ -177,6 +184,7 @@ As we don't change directly the EIP directly, we need to set an *offcode*  to ju
 After downloaded, install in *C:\Program Files\Immunity Inc\Immunity Debugger\PyCommands*
 
 Testing:
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324154807.png)
 Creating a working folder in the desktop:
 ```
@@ -191,9 +199,10 @@ It will be stored in our folder
 
 We can edit and only let the necessary information, after that, share this to a smbFolder to linux
 
-```
+````
 smbserver.py smbFolder $(pwd) -smb2support
-```
+````
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324155517.png)
 
 Copying the file to the clipboard:
@@ -242,10 +251,10 @@ We dd this to out payload
 ##### Now we can find the bad chars
 Dumping the string
 
-![[Pasted image 20240324160459.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324160459.png)
 We need to analyze which sequence of numbers is not the correct. **In general x\00 is a bad char**. In this case it's been showed in any way but we will remove it. *\x0A* and *\x0D* grant problems too in general.
 
-![[Pasted image 20240324160630.png]]
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324160630.png)
 #### Getting opcode
 By using:
 
@@ -266,6 +275,7 @@ Then look for the JMP ESP opcode in the vulnerable DLL
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324162810.png)
 
 To verify if this works, we look for the address:
+
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324163058.png)
 ![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%20image%2020240324163118.png)
 
