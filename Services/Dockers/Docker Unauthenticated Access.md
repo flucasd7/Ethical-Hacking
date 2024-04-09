@@ -1,0 +1,3 @@
+Remote API is running by default on *2375* port when enabled. The service by default will not require authentication allowing an attacker to start a privileged docker container. By using the Remote API one can attach hosts / (root directory) to the container and read/write files of the host’s environment.
+We can test different payloads to ennumerate the service:
+https://book.hacktricks.xyz/network-services-pentesting/2375-pentesting-docker#basic-information
